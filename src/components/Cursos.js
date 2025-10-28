@@ -5,7 +5,7 @@ import Alumnos from './Alumnos';
 
 export default class Cursos extends Component {
 
-  url = Global.apiEjemplos;
+  
 
   selectcursos = React.createRef();
 
@@ -15,18 +15,7 @@ export default class Cursos extends Component {
     alumno: null
   }
 
-  loadCursos = () => {
-    let request = "api/Alumnos/Cursos";
-    axios.get(this.url + request).then(response=>{
-      this.setState({
-        cursos: response.data
-      })
-    })
-  }
-
-  componentDidMount = () => {
-    this.loadCursos();
-  }
+  
 
   mostrarAlumnos = () => {
     let idcurso = this.selectcursos.current.value;

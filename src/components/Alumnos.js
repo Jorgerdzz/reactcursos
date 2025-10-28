@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import Global from '../Global'
 import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 
 export default class Alumnos extends Component {
 
   url = Global.apiEjemplos;
-  botonalumnos = React.createRef();
+  botoneliminar = React.createRef();
 
   state = {
     alumnos: [],
-    alumno: null
   }
 
   loadAlumnos = () => {
@@ -31,24 +31,45 @@ export default class Alumnos extends Component {
     }
   }
 
+  deleteAlumno = (id) => {
+    let request = "api/Alumnos/DeleteAlumno/" + id;
+    axios.delete(this.url+request).then(response=>{
+      console.log("Eliminado")
+      this.loadAlumnos();
+    })
+  }
+
   render() {
     return (
       <div>
-        <ul>
-          {
-            this.state.alumnos.map((alumno, index)=>{
-              return(
-                <li key={index}>
-                  {alumno.nombre} {alumno.apellidos}
-                  <button onClick={ () => {
-                    this.props.loadDetalleAlumno(alumno.idAlumno)}}>
-                    Detalles
-                  </button>
-                </li>
-              )
-            })
-          }
-        </ul>
+        <table className='table table-primary table-striped table-hover'>
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>NOMBRE</th>
+              <th>Apellidos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+              {
+                this.state.alumnos.map((alumno, index)=>{
+                  return(
+                    <tr>
+                      <td><img src={alumno.imagen} style={{width: "100px"}}></img></td>
+                      <td>{alumno.nombre}</td>
+                      <td>{alumno.apellidos}</td>
+                      <td>
+                        <NavLink to={"/updatealumno/" + alumno.idAlumno} className="btn btn-warning me-2">UPDATE</NavLink>
+                        <button onClick={ () => {
+                          this.deleteAlumno(alumno.idAlumno)}} className='btn btn-danger'>DELETE</button>
+                      </td>
+                    </tr>
+                  )
+                })
+              }
+          </tbody>
+        </table>
       </div>
     )
   }
